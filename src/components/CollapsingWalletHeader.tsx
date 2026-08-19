@@ -1,7 +1,7 @@
 import React, { useMemo, useState, useCallback, useRef, useEffect } from 'react';
 import type { GetInfoResponse, FiatCurrency } from '@breeztech/breez-sdk-spark';
 import { safeAreaTop } from '../utils/safeAreaInsets';
-import { getFiatSettings, getDisplayFiatCurrency, setDisplayFiatCurrency } from '../services/settings';
+import { getFiatSettings, getDisplayFiatCurrency, setDisplayFiatCurrency, buyCopy } from '../services/settings';
 import { formatWithSpaces } from '../utils/formatNumber';
 import { SatAmount } from './SatAmount';
 import { useAnimatedNumber } from '../hooks/useAnimatedNumber';
@@ -321,11 +321,11 @@ const CollapsingWalletHeader: React.FC<CollapsingWalletHeaderProps> = ({
               <button
                 type="button"
                 disabled={isBuyLoading}
-                className="flex items-center gap-1.5 h-9 px-3 rounded-xl text-spark-text-secondary hover:text-spark-text-primary border border-white/10 hover:border-white/20 hover:bg-white/5 transition-colors text-sm font-medium disabled:opacity-50"
+                className="flex items-center gap-1.5 h-9 px-3 rounded-xl text-spark-text-secondary hover:text-spark-text-primary border border-white/10 hover:border-white/20 hover:bg-white/5 transition-colors text-sm font-medium disabled:opacity-50 whitespace-nowrap"
                 onClick={onOpenBuyBitcoin}
               >
                 {isBuyLoading ? <SpinnerIcon size="sm" className="animate-spin" /> : <CurrencyIcon size="sm" />}
-                <span>Buy</span>
+                <span>{buyCopy('Buy')}</span>
               </button>
             )}
           </div>

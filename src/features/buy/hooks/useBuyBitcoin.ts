@@ -14,8 +14,10 @@ import { isStandalonePwa, openExternalUrl } from '../../../utils/externalLink';
 import {
   getBuyProviderSettings,
   filterProvidersByNetwork,
+  filterProvidersByPlatform,
   type BuyBitcoinProvider,
 } from '../../../services/settings';
+import { useCashAppInstalled } from '../../../hooks/useCashAppInstalled';
 
 export type BuyStep = 'select' | 'amount' | 'qr';
 
@@ -109,11 +111,15 @@ export function useBuyBitcoin({
   const [isGenerating, setIsGenerating] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  const cashAppInstalled = useCashAppInstalled();
   const enabledProviders = useMemo(
-    () => filterProvidersByNetwork(getBuyProviderSettings(), network),
+    () => filterProvidersByPlatform(
+      filterProvidersByNetwork(getBuyProviderSettings(), network),
+      cashAppInstalled,
+    ),
     // Re-read when the dialog opens so updates from settings are reflected.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [isOpen, network]
+    [isOpen, network, cashAppInstalled]
   );
 
   // No reset-on-close needed — parent (WalletPage) bumps `buyBitcoinSession`

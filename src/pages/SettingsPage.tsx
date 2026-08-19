@@ -1,7 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { ConfirmDialog, FormGroup, FormInput, LoadingSpinner, PrimaryButton, Switch } from '../components/ui';
 import { PinGate } from '../components/PinEntry';
-import { getSettings, saveSettings, UserSettings, isBuyBitcoinAvailable, isDevMode as isDevModeEnabled, setDevMode } from '../services/settings';
+import { getSettings, saveSettings, UserSettings, isBuyBitcoinAvailable, buyCopy, isDevMode as isDevModeEnabled, setDevMode } from '../services/settings';
+import { useCashAppInstalled } from '../hooks/useCashAppInstalled';
 import type { Config, Network } from '@breeztech/breez-sdk-spark';
 import { useWallet } from '@/contexts/WalletContext';
 import { CurrencyIcon, ChevronRightIcon, DownloadIcon, KeyIcon, LockIcon, ShieldCheckIcon, TrashIcon, ExternalLinkIcon } from '../components/Icons';
@@ -34,6 +35,7 @@ const SettingsPage: React.FC<SettingsPageProps> = ({
   onOpenBackup,
 }) => {
   const wallet = useWallet();
+  const cashAppInstalled = useCashAppInstalled();
   const {
     handleTap: devTap,
     activated: isDevMode,
@@ -240,7 +242,7 @@ const SettingsPage: React.FC<SettingsPageProps> = ({
                 </div>
                 <ChevronRightIcon size="md" />
               </button>
-              {isBuyBitcoinAvailable() && (
+              {isBuyBitcoinAvailable(cashAppInstalled) && (
                 <button
                   className="flex items-center justify-between w-full px-4 py-3 text-sm font-medium border border-spark-border rounded-xl text-spark-text-secondary hover:text-spark-text-primary hover:bg-white/5 transition-colors"
                   type="button"
@@ -248,7 +250,7 @@ const SettingsPage: React.FC<SettingsPageProps> = ({
                 >
                   <div className="flex items-center gap-3">
                     <CurrencyIcon size="md" />
-                    <span>Buy Bitcoin</span>
+                    <span>{buyCopy('Buy Bitcoin')}</span>
                   </div>
                   <ChevronRightIcon size="md" />
                 </button>

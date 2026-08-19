@@ -6,14 +6,31 @@ import { Preferences } from "@capacitor/preferences";
 export type BuyBitcoinProvider = 'moonpay' | 'cashApp';
 
 /**
- * Buy Bitcoin is hidden in the native iOS app: App Review Guideline 3.1.5(iii)
- * treats third-party purchase links as exchange services requiring licensing
- * evidence. Web and Android are unaffected. TestFlight-only iOS builds may
- * re-enable it via VITE_IOS_ENABLE_BUY=true; never ship a flagged build to
- * App Store review.
+ * iOS surfaces Cash App only, and only while it is installed: what is left
+ * there is a hand-off to an app the user already has, not the purchase link
+ * App Review read as Glow operating an exchange (#281). MoonPay is that
+ * purchase link, so it stays off iOS. Web and Android keep both providers.
+ * `cashAppInstalled` comes from useCashAppInstalled() and is ignored off iOS.
  */
-export function isBuyBitcoinAvailable(): boolean {
-  return Capacitor.getPlatform() !== 'ios' || import.meta.env.VITE_IOS_ENABLE_BUY === 'true';
+export function filterProvidersByPlatform(
+  providers: BuyBitcoinProvider[],
+  cashAppInstalled: boolean,
+): BuyBitcoinProvider[] {
+  if (Capacitor.getPlatform() !== 'ios') return providers;
+  return cashAppInstalled ? providers.filter((p) => p === 'cashApp') : [];
+}
+
+/** Whether any Buy surface should exist at all on this platform. */
+export function isBuyBitcoinAvailable(cashAppInstalled: boolean): boolean {
+  return filterProvidersByPlatform(ALL_BUY_PROVIDERS, cashAppInstalled).length > 0;
+}
+
+/**
+ * iOS names the destination instead of the act, since "Buy" is what App Review
+ * read as Glow selling bitcoin. Other platforms keep their existing wording.
+ */
+export function buyCopy(elsewhere: string): string {
+  return Capacitor.getPlatform() === 'ios' ? 'Add funds from Cash App' : elsewhere;
 }
 
 /** Filter out providers unavailable on the current network (e.g. CashApp is mainnet-only) */
