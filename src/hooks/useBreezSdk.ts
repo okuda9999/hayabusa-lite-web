@@ -21,8 +21,9 @@ import { buildConnectConfig } from './buildConnectConfig';
 import { logger, LogCategory, logSdkMessage } from '../services/logger';
 import { formatError } from '../utils/formatError';
 import { isStandalonePwa, openExternalUrl } from '../utils/externalLink';
+import { INSTANT_CLAIM_SUBMITTED_TOAST } from '../utils/depositClaimQuote';
 import { isDepositRejected, clearRejectedDeposits } from '../services/depositState';
-import { setCachedStableTicker, clearNetworkOverride, clearStableRestorePrompted, ensureSparkPrivateMode, isDevMode, type BuyBitcoinProvider } from '../services/settings';
+import { setCachedStableTicker, clearNetworkOverride, clearStableRestorePrompted, ensureSparkPrivateMode, type BuyBitcoinProvider } from '../services/settings';
 import { wipeAllLocalData } from '../services/accountDeletion';
 import { hideSplash } from '../main';
 import {
@@ -55,7 +56,6 @@ import { isSendSheetOpen } from '../features/send/sendSheetVisibility';
 import { clearPin, isAppLockSupported } from '../services/appLock';
 import { hasConversionInFlight } from '../contexts/WalletContext';
 import { isConversionPayment } from '../utils/paymentDescription';
-
 
 // ============================================
 // Payment filtering
@@ -92,10 +92,9 @@ async function initSdkLogging() {
     // screen. Dev mode lifts the cap for the visit, so verbose logs can
     // still be collected from a released build (`?dev=true`) when a report
     // needs them. Undefined restores the SDK default.
-    const verbose = import.meta.env.DEV || isDevMode();
     initLogging(
       { log: (entry: LogEntry) => logSdkMessage(entry.level, entry.line) },
-      verbose ? undefined : 'info',
+      'info,breez_sdk_spark=debug,breez_sdk_spark_wasm=debug,spark=debug,spark_wallet=debug,spark::ssp::graphql::client=trace',
     );
   } catch {
     /* SDK unavailable; skip the log bridge. */
@@ -393,8 +392,17 @@ export function useBreezSdk(
         showToastRef.current('error', 'Payment Failed', 'The payment did not go through. Your funds were not sent.');
       }
     } else if (event.type === 'claimedDeposits') {
-      logger.info(LogCategory.PAYMENT, 'Deposits claimed', { count: event.claimedDeposits.length });
-      showToastRef.current('success', 'Deposits Claimed Successfully', `${event.claimedDeposits.length} deposits were claimed`);
+      // An instant (0-conf) claim fires this event on submission, before the
+      // funds are credited, so it can't share the settled copy.
+      const submitted = event.claimedDeposits.filter(d => d.instantClaimStatus?.type === 'submitted');
+      const settled = event.claimedDeposits.length - submitted.length;
+      logger.info(LogCategory.PAYMENT, 'Deposits claimed', { settled, submitted: submitted.length });
+      if (settled > 0) {
+        showToastRef.current('success', 'Deposits Claimed Successfully', `${settled} deposits were claimed`);
+      }
+      if (submitted.length > 0) {
+        showToastRef.current('success', INSTANT_CLAIM_SUBMITTED_TOAST.title, INSTANT_CLAIM_SUBMITTED_TOAST.detail);
+      }
       refreshWalletData(false);
       fetchUnclaimedDeposits();
     } else if (event.type === 'unclaimedDeposits') {
