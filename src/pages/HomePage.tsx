@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useSecretTap } from '@/hooks/useSecretTap';
 import GlowLogo from '@/components/GlowLogo';
+import { t } from '@/i18n';
 import { safeAreaTop, safeAreaBottom } from '@/utils/safeAreaInsets';
 import { useStatusBarColor } from '@/hooks/useStatusBarColor';
 import { STATUS_BAR_DARK } from '@/utils/statusBarManager';
@@ -157,14 +158,14 @@ const HomePage: React.FC<HomePageProps> = ({
                   data-testid="get-started-button"
                   className="button w-full py-4 text-base tracking-wider"
                 >
-                  Get Started
+                  {t('getStarted')}
                 </button>
 
                 <button
                   onClick={() => setShowMnemonicFlow(true)}
                   className="text-spark-text-muted text-xs hover:text-spark-text-secondary transition-colors w-full text-center py-2"
                 >
-                  Use Recovery Phrase Instead
+                  {t('useRecoveryPhrase')}
                 </button>
               </>
             ) : (
@@ -194,7 +195,7 @@ const HomePage: React.FC<HomePageProps> = ({
                   data-testid="create-passkey-button"
                   className="button w-full py-4 text-base tracking-wider"
                 >
-                  Create Passkey
+                  {t('createPasskey')}
                 </button>
 
                 <button
@@ -202,14 +203,14 @@ const HomePage: React.FC<HomePageProps> = ({
                   data-testid="signin-passkey-button"
                   className="button-secondary w-full py-4 rounded-xl font-display font-semibold text-sm tracking-wide"
                 >
-                  Use Existing Passkey
+                  {t('useExistingPasskey')}
                 </button>
 
                 <button
                   onClick={() => setShowMnemonicFlow(true)}
                   className="text-spark-text-muted text-xs hover:text-spark-text-secondary transition-colors w-full text-center py-2"
                 >
-                  Use Recovery Phrase Instead
+                  {t('useRecoveryPhrase')}
                 </button>
               </>
             )
@@ -221,7 +222,7 @@ const HomePage: React.FC<HomePageProps> = ({
                 data-testid="create-wallet-button"
                 className="button w-full py-4 text-base tracking-wider"
               >
-                Get Started
+                {t('getStarted')}
               </button>
 
               <button
@@ -229,7 +230,7 @@ const HomePage: React.FC<HomePageProps> = ({
                 data-testid="restore-wallet-button"
                 className="button-secondary w-full py-4 rounded-xl font-display font-semibold text-sm tracking-wide"
               >
-                Restore from Backup
+                {t('restoreFromBackup')}
               </button>
 
               {/* Toggle back to passkey if PRF available */}
@@ -238,7 +239,7 @@ const HomePage: React.FC<HomePageProps> = ({
                   onClick={() => setShowMnemonicFlow(false)}
                   className="text-spark-text-muted text-xs hover:text-spark-text-secondary transition-colors w-full text-center py-2"
                 >
-                  Use Passkey Instead
+                  {t('usePasskey')}
                 </button>
               )}
             </>

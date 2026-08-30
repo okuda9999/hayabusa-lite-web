@@ -17,6 +17,7 @@ import ProcessingStep from './steps/ProcessingStep';
 import ResultStep from './steps/ResultStep';
 import ContactsSubView from './components/ContactsSubView';
 import { setSendSheetOpen } from './sendSheetVisibility';
+import { t } from '@/i18n';
 import { holdIdleLock } from '@/services/appLock';
 import { PrepareLnurlPayRequest } from '@breeztech/breez-sdk-spark';
 import { logger, LogCategory } from '@/services/logger';
@@ -108,7 +109,7 @@ const SendPaymentDialog: React.FC<SendPaymentDialogProps> = ({ isOpen, onClose, 
   };
 
   const dialogTitle = send.currentStep === 'input'
-    ? 'Send BTC or USD'
+    ? t('sendBitcoin')
     : getPaymentMethodName(send.paymentInput);
 
   // Same resolver as the save prompt, so a scanned LNURL names its recipient

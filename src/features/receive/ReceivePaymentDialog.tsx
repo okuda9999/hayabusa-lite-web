@@ -25,6 +25,7 @@ import LightningAddressDisplay from './LightningAddressDisplay';
 import AmountPanel from './AmountPanel';
 import { ArrowDownIcon, LightningBoltIcon } from '../../components/Icons';
 import { holdIdleLock } from '@/services/appLock';
+import { t } from '@/i18n';
 
 interface ReceivePaymentDialogProps {
   isOpen: boolean;
@@ -184,7 +185,7 @@ const ReceivePaymentDialog: React.FC<ReceivePaymentDialogProps> = ({ isOpen, onC
       <BottomSheetContainer isOpen={isOpen} onClose={onClose} showBackdrop>
         <BottomSheetCard>
           <DialogHeader
-            title="Receive"
+            title={t('receive')}
             onClose={onClose}
             icon={<ArrowDownIcon />}
           />

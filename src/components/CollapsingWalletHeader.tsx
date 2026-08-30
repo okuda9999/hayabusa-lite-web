@@ -12,6 +12,7 @@ import { getTokenBalance, formatTokenAmount } from '../utils/tokenFormatting';
 import StableBalanceToggleFlow from './StableBalanceToggleFlow';
 import { useRestoreStableBalancePrompt } from '../hooks/useRestoreStableBalancePrompt';
 import { productFeatures } from '../constants/productFeatures';
+import { t } from '../i18n';
 
 // Module-level flag: once the balance count-up has played, skip it on remount.
 // Resets on full page reload.
@@ -342,7 +343,7 @@ const CollapsingWalletHeader: React.FC<CollapsingWalletHeaderProps> = ({
               }`}
             >
               <span className="w-1.5 h-1.5 rounded-full bg-spark-primary animate-pulse" />
-              Syncing
+              {t('syncing')}
             </span>
             {/* inline-flex + items-center keeps the suffix pill on the
                 same vertical axis as the BALANCE text (inline baseline
@@ -352,7 +353,7 @@ const CollapsingWalletHeader: React.FC<CollapsingWalletHeaderProps> = ({
                 isSyncing ? 'opacity-0' : 'opacity-100'
               }`}
             >
-              Balance
+              {t('balance')}
               {/* Amber chip + swap glyph so the suffix reads as a
                   currency-switch control, not part of the label (#300).
                   Hover never fires on touch; active: is the mobile

@@ -21,6 +21,7 @@ import { getBuyProviderSettings, filterProvidersByNetwork, isBuyBitcoinAvailable
 import { useStatusBarColor } from '../hooks/useStatusBarColor';
 import { STATUS_BAR_WALLET_GLASS } from '../utils/statusBarManager';
 import { onDeepLink } from '../utils/deepLink';
+import { t } from '../i18n';
 
 interface WalletPageProps {
   walletInfo: GetInfoResponse | null;
@@ -329,14 +330,14 @@ const WalletPage: React.FC<WalletPageProps> = ({
           data-testid="send-button"
         >
           <ArrowUpIcon />
-          <span>Send</span>
+          <span>{t('send')}</span>
         </button>
 
         {/* QR Scanner button - viewfinder style */}
         <button
           onClick={() => setIsQrScannerOpen(true)}
           className="qr-scanner-button"
-          aria-label="Scan QR Code"
+          aria-label={t('scanQr')}
           data-testid="scan-button"
         >
           <span className="qr-corner qr-corner--tl" />
@@ -353,7 +354,7 @@ const WalletPage: React.FC<WalletPageProps> = ({
           data-testid="receive-button"
         >
           <ArrowDownIcon />
-          <span>Receive</span>
+          <span>{t('receive')}</span>
         </button>
       </div>
 
