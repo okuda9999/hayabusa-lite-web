@@ -43,7 +43,7 @@ const native = Capacitor.isNativePlatform();
  * dev certs are off the production RP.
  */
 const NATIVE_RP_ID =
-  (import.meta.env.VITE_NATIVE_PASSKEY_RP_ID as string | undefined) || 'keys.breez.technology';
+  (import.meta.env.VITE_NATIVE_PASSKEY_RP_ID as string | undefined) || 'keys.hayabusawallet.com';
 
 /**
  * RP ID used by all existing (legacy) passkeys: the hostname at creation
@@ -70,7 +70,7 @@ logger.info(LogCategory.AUTH, 'Passkey config', {
   legacyRpId: LEGACY_RP_ID,
   sharedRpId: SHARED_RP_ID ?? 'not configured',
   platform: native ? 'native' : 'browser',
-  nativeRpOverridden: native && NATIVE_RP_ID !== 'keys.breez.technology',
+  nativeRpOverridden: native && NATIVE_RP_ID !== 'keys.hayabusawallet.com',
 });
 
 /** Local-time, second precision, ASCII-only, e.g. `May 6, 2026 21:14:56`. */
