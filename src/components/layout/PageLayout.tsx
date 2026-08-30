@@ -36,7 +36,7 @@ const PageLayout: React.FC<PageLayoutProps> = ({
               lands at the same screen y coordinate when navigating. */}
           <div className="relative px-4 h-14 flex items-center justify-center">
             <h1 className="text-center font-display text-xl font-bold text-spark-text-primary">
-              {title || "Glow"}
+              {title || "Hayabusa"}
             </h1>
             {onBack && (
               <button

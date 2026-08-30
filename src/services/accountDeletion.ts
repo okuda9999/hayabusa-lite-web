@@ -9,7 +9,7 @@ import { closeLogDatabase } from './logStorage';
  * must be saved first. Linked from the logout confirm dialog and the
  * post-deletion confirmation screen.
  */
-export const ACCOUNT_DELETION_GUIDE_URL = 'https://glow-app.co/delete-account.html';
+export const ACCOUNT_DELETION_GUIDE_URL = 'https://hayabusawallet.com/delete-account.html';
 
 /**
  * Erase every client-side artifact of the account: localStorage,

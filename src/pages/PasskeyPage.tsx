@@ -321,7 +321,7 @@ const PasskeyPage: React.FC<PasskeyPageProps> = ({
           // Rotate user.name so Apple Passwords doesn't dedupe a fresh
           // registration against a sibling; pin the sign-in to the active
           // cred so the OS can't substitute one that derives another wallet.
-          const userName = `Glow · ${createPasskeyTimestampLabel()}`;
+          const userName = `Hayabusa · ${createPasskeyTimestampLabel()}`;
           // Timed like register/signIn below: the label discovery inside
           // stalls on dead relays, and the timer isolates that from connect().
           // Ceremony-scoped clock. `detectStartMs` also covers the
@@ -815,7 +815,7 @@ const PasskeyPage: React.FC<PasskeyPageProps> = ({
           // bytes per call) and never host-supplied. Rotate user.name
           // per call so Apple Passwords doesn't dedupe siblings by
           // `(rpId, user.name)`.
-          const userName = `Glow · ${createPasskeyTimestampLabel()}`;
+          const userName = `Hayabusa · ${createPasskeyTimestampLabel()}`;
           // Exclude creds already on this device so the authenticator
           // refuses a second Glow passkey (one per device per RP). A
           // match raises PasskeyAlreadyExistsError, handled in the catch.

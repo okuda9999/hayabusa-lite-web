@@ -6,6 +6,7 @@ import { useStableBalance } from '../../../contexts/StableBalanceContext';
 import { getTokenBalance } from '../../../utils/tokenFormatting';
 import { logger, LogCategory } from '@/services/logger';
 import { formatError } from '@/utils/formatError';
+import { productFeatures } from '@/constants/productFeatures';
 
 /** The destination string inside a parsed input, or null for the types that
  *  are paid through their own workflow rather than a prepared destination. */
@@ -211,7 +212,12 @@ export function useSendPayment(): UseSendPaymentReturn {
         setAmountFixed(false);
         setCurrentStep('amount');
       } else if (effective.type === 'crossChainAddress') {
-        setCurrentStep('amount');
+        if (productFeatures.crossChain) {
+          setCurrentStep('amount');
+        } else {
+          setError('Cross-chain payments are not supported by Hayabusa Lite');
+          setCurrentStep('input');
+        }
       } else if (
         effective.type === 'lnurlPay' ||
         effective.type === 'lightningAddress' ||

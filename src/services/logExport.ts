@@ -15,7 +15,7 @@ export const getAllLogsAsZip = async (): Promise<Blob> => {
   const nowTimestamp = Math.floor(now.getTime() / 1000);
 
   const currentSessionHeader = [
-    `Glow Log Export`,
+    `Hayabusa Log Export`,
     `Session: Current`,
     `Generated: ${now.toISOString()}`,
     '='.repeat(60),
@@ -40,7 +40,7 @@ export const getAllLogsAsZip = async (): Promise<Blob> => {
         const suffix = session.id.split('-')[1] ?? String(index);
         const filename = `${sessionTimestamp}_glow_session_${suffix}.txt`;
         const sessionHeader = [
-          `Glow Log Export`,
+          `Hayabusa Log Export`,
           `Session ID: ${session.id}`,
           `Started: ${session.startedAt}`,
           session.endedAt ? `Ended: ${session.endedAt}` : 'Status: Active',
@@ -130,7 +130,7 @@ export const exportDatabaseState = async (identityPubkey: string, network: strin
       const file = new File([blob], filename, { type: 'application/json' });
       if (navigator.canShare({ files: [file] })) {
         try {
-          await navigator.share({ files: [file], title: 'Glow SDK Database Export' });
+          await navigator.share({ files: [file], title: 'Hayabusa SDK Database Export' });
           return;
         } catch (e) {
           if ((e as Error).name === 'AbortError') return;
@@ -184,7 +184,7 @@ const shareFileNative = async (blob: Blob, filename: string): Promise<void> => {
     directory: Directory.Cache,
   });
   await Share.share({
-    title: 'Glow Logs',
+    title: 'Hayabusa Logs',
     url: uri,
     dialogTitle: 'Share logs',
   });
@@ -217,7 +217,7 @@ export const shareOrDownloadLogs = async (): Promise<void> => {
     const file = new File([blob], filename, { type: 'application/zip' });
     if (navigator.canShare({ files: [file] })) {
       try {
-        await navigator.share({ files: [file], title: 'Glow Logs' });
+        await navigator.share({ files: [file], title: 'Hayabusa Logs' });
         return;
       } catch (e) {
         if ((e as Error).name === 'AbortError') return;

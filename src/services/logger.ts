@@ -331,7 +331,7 @@ export const logger = {
 
   /** Export logs for bug reports */
   exportForBugReport: (): string => {
-    const header = `Glow Log Export\nGenerated: ${new Date().toISOString()}\nEntries: ${logBuffer.length}\n${'='.repeat(50)}\n\n`;
+    const header = `Hayabusa Log Export\nGenerated: ${new Date().toISOString()}\nEntries: ${logBuffer.length}\n${'='.repeat(50)}\n\n`;
     return header + logger.getLogsAsString();
   },
 

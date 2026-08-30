@@ -2,6 +2,7 @@ import { MaxFee } from "@breeztech/breez-sdk-spark/web";
 import type { Network } from "@breeztech/breez-sdk-spark";
 import { Capacitor } from "@capacitor/core";
 import { Preferences } from "@capacitor/preferences";
+import { productFeatures } from "../constants/productFeatures";
 /** Provider identifiers matching the SDK's BuyBitcoinRequest tagged union */
 export type BuyBitcoinProvider = 'moonpay' | 'cashApp';
 
@@ -13,6 +14,7 @@ export type BuyBitcoinProvider = 'moonpay' | 'cashApp';
  * App Store review.
  */
 export function isBuyBitcoinAvailable(): boolean {
+  if (!productFeatures.buyBitcoin) return false;
   return Capacitor.getPlatform() !== 'ios' || import.meta.env.VITE_IOS_ENABLE_BUY === 'true';
 }
 
@@ -115,7 +117,7 @@ export function saveSettings(settings: UserSettings): void {
  * persisted toggle reserved for gating cross-chain receive.
  */
 export function isCrossChainEnabled(): boolean {
-  return getSettings().crossChainEnabled === true;
+  return productFeatures.crossChain && getSettings().crossChainEnabled === true;
 }
 
 /**

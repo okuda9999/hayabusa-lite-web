@@ -11,6 +11,7 @@ import { useFiatData } from '../contexts/FiatDataContext';
 import { getTokenBalance, formatTokenAmount } from '../utils/tokenFormatting';
 import StableBalanceToggleFlow from './StableBalanceToggleFlow';
 import { useRestoreStableBalancePrompt } from '../hooks/useRestoreStableBalancePrompt';
+import { productFeatures } from '../constants/productFeatures';
 
 // Module-level flag: once the balance count-up has played, skip it on remount.
 // Resets on full page reload.
@@ -74,7 +75,7 @@ const CollapsingWalletHeader: React.FC<CollapsingWalletHeaderProps> = ({
   }
 
   // userToggle wins over restorePrompt (user already saw the pill).
-  const isOpen = userToggle !== null || autoOpened;
+  const isOpen = productFeatures.stableBalance && (userToggle !== null || autoOpened);
   const direction: 'toToken' | 'toBitcoin' = userToggle?.direction ?? 'toToken';
   const dialogKey = userToggle ? `user-${userToggle.session}` : 'restore';
 
@@ -357,19 +358,23 @@ const CollapsingWalletHeader: React.FC<CollapsingWalletHeaderProps> = ({
                   Hover never fires on touch; active: is the mobile
                   feedback path. Chip uses tighter tracking than the
                   label so it stays compact and button-like. */}
-              <button
-                type="button"
-                onClick={handleSuffixTap}
-                disabled={stableBalance.isToggling}
-                aria-label={`Switch balance to ${stableBalance.isActive ? 'Bitcoin' : 'USD'}`}
-                className="group inline-flex items-center cursor-pointer transition-colors disabled:opacity-50 font-display text-xs font-medium uppercase"
-              >
-                <span className="mx-1.5 tracking-widest">·</span>
-                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full tracking-wide text-spark-text-primary bg-white/10 border border-white/25 hover:bg-white/15 active:bg-white/20 active:scale-95 transition-all">
-                  <SwapVerticalIcon size="xs" className="w-2.5 h-2.5 transition-transform duration-300 group-active:rotate-180" />
-                  {balanceSuffix}
-                </span>
-              </button>
+              {productFeatures.stableBalance ? (
+                <button
+                  type="button"
+                  onClick={handleSuffixTap}
+                  disabled={stableBalance.isToggling}
+                  aria-label={`Switch balance to ${stableBalance.isActive ? 'Bitcoin' : 'USD'}`}
+                  className="group inline-flex items-center cursor-pointer transition-colors disabled:opacity-50 font-display text-xs font-medium uppercase"
+                >
+                  <span className="mx-1.5 tracking-widest">·</span>
+                  <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full tracking-wide text-spark-text-primary bg-white/10 border border-white/25 hover:bg-white/15 active:bg-white/20 active:scale-95 transition-all">
+                    <SwapVerticalIcon size="xs" className="w-2.5 h-2.5 transition-transform duration-300 group-active:rotate-180" />
+                    {balanceSuffix}
+                  </span>
+                </button>
+              ) : (
+                <span className="ml-1.5 tracking-widest">· SATS</span>
+              )}
             </span>
           </div>
 
@@ -428,17 +433,19 @@ const CollapsingWalletHeader: React.FC<CollapsingWalletHeaderProps> = ({
 
     </div>
 
-    <StableBalanceToggleFlow
-      key={dialogKey}
-      isOpen={isOpen}
-      direction={direction}
-      restorePrompt={autoOpened}
-      onComplete={() => {
-        refreshWalletData?.();
-        closeToggleFlow();
-      }}
-      onCancel={closeToggleFlow}
-    />
+    {productFeatures.stableBalance && (
+      <StableBalanceToggleFlow
+        key={dialogKey}
+        isOpen={isOpen}
+        direction={direction}
+        restorePrompt={autoOpened}
+        onComplete={() => {
+          refreshWalletData?.();
+          closeToggleFlow();
+        }}
+        onCancel={closeToggleFlow}
+      />
+    )}
   </>
   );
 };

@@ -132,7 +132,7 @@ const HomePage: React.FC<HomePageProps> = ({
         {/* Title */}
         <h1 className="font-display text-5xl md:text-6xl font-bold text-center mb-2 tracking-tight">
           <span className="text-gradient-primary">
-            Glow
+            Hayabusa
           </span>
         </h1>
 

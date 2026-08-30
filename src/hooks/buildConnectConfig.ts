@@ -3,6 +3,7 @@ import { getSettings } from '../services/settings';
 import { logger, LogCategory } from '../services/logger';
 import { formatError } from '../utils/formatError';
 import { USDB_TOKEN_IDENTIFIER, USDB_TICKER } from '../constants/stableBalance';
+import { productFeatures } from '../constants/productFeatures';
 
 /**
  * Build a Breez SDK Config from environment and persisted user settings.
@@ -18,12 +19,14 @@ export function buildConnectConfig(overrideNetwork?: Network): Config {
   const network = (overrideNetwork ?? (urlParams.get('network') ?? 'mainnet')) as Network;
   const config: Config = defaultConfig(network);
   config.apiKey = breezApiKey;
-  config.stableBalanceConfig = {
-    tokens: [{ label: USDB_TICKER, tokenIdentifier: USDB_TOKEN_IDENTIFIER }],
-  };
+  if (productFeatures.stableBalance) {
+    config.stableBalanceConfig = {
+      tokens: [{ label: USDB_TICKER, tokenIdentifier: USDB_TOKEN_IDENTIFIER }],
+    };
+  }
   // Cross-chain sends are mainnet-only: the SDK rejects the config on any
   // other network at connect time, which aborts the whole connection.
-  if (network === 'mainnet') {
+  if (productFeatures.crossChain && network === 'mainnet') {
     config.crossChainConfig = {};
   }
 

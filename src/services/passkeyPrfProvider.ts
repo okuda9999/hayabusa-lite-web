@@ -63,7 +63,7 @@ export const SHARED_RP_ID: string | undefined =
 
 /** Default RP ID for normal operation: shared when configured, else legacy. */
 export const rpId = SHARED_RP_ID ?? LEGACY_RP_ID;
-export const rpName = 'Glow';
+export const rpName = 'Hayabusa';
 
 logger.info(LogCategory.AUTH, 'Passkey config', {
   rpId,

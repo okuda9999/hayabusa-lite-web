@@ -296,7 +296,7 @@ export interface MigrationSession {
 
 export function createMigrationSession(): MigrationSession {
   // Rotating user.name for the shared register (Apple Passwords dedupes by it).
-  const userName = `Glow · ${createPasskeyTimestampLabel()}`;
+  const userName = `Hayabusa · ${createPasskeyTimestampLabel()}`;
   let legacyClient: PasskeyClient | null = null;
   let sharedClient: PasskeyClient | null = null;
   // Pin every legacy ceremony (including label discovery) to the active passkey,
